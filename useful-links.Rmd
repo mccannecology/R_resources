@@ -1,0 +1,92 @@
+Useful Links
+========================================================
+</br>
+
+R Programming
+--------------------------------------------------------
+
+### Coding With R  
+  
+* [Hadley Wickham's Advanced R Programming](http://adv-r.had.co.nz/)  
+    
+  * [Style Guide](http://adv-r.had.co.nz/Style.html)  
+  
+* [Google Developer Videos](https://plus.google.com/+GoogleDevelopers/posts/jQYhQ4ymReQ)
+      
+* [R Cheat Sheet](http://overapi.com/r/) 
+   
+  * [Reference Card](http://cran.r-project.org/doc/contrib/refcard.pdf)  
+    
+  * [Short Reference Card](http://cran.r-project.org/doc/contrib/Short-refcard.pdf)  
+    
+* [Using the `apply` family of functions](http://nsaunders.wordpress.com/2010/08/20/a-brief-introduction-to-apply-in-r/)  
+  
+* [R Cookbook](http://www.matthewckeller.com/R_Syntax_Examples_1.pdf)
+  
+</br>
+
+### Graphics and Plotting in R  
+  
+* [Idiot's guide to R base graphics](http://rpubs.com/SusanEJohnston/7953)  
+  
+* [R Cookbook Graphs](http://www.cookbook-r.com/Graphs/)  
+  
+* [ggplot2](http://ggplot2.org/)
+
+</br>
+
+### Statistics with R  
+  
+* [Stats with R Notes](http://zoonek2.free.fr/UNIX/48_R/all.html)  
+  
+* [Syntax examples for R Stats](http://www.matthewckeller.com/R_Syntax_Examples_1.pdf)
+
+</br>
+
+### R Markdown  
+    
+* [Markdown Basics](http://daringfireball.net/projects/markdown/basics)  
+  
+* [Markdown Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#wiki-code)  
+  
+* [Markdown Example with RCharts](http://rpubs.com/rchavelas90/9331)  
+  
+* [Using Markdown with RStudio](http://www.rstudio.com/ide/docs/authoring/using_markdown)  
+  
+* [knitr Homepage](http://yihui.name/knitr/)  
+  
+  * [knitr Chunk Options](http://yihui.name/knitr/options)  
+  
+* [knitr in a nutshell](http://kbroman.github.io/knitr_knutshell/)
+
+* [Slidify](http://slidify.org/)
+
+</br>
+
+### LaTeX   
+
+#### (useful when combined with R Markdown)    
+  
+* [LaTeX Commands](www.artofproblemsolving.com/Wiki/index.php/LaTeX:Commands)  
+  
+* [LaTeX Symbols](http://www.artofproblemsolving.com/Wiki/index.php/LaTeX:Symbols)  
+  
+* [LaTeX Examples](http://www.calvin.edu/~rpruim/courses/m343/F12/RStudio/LatexExamples.html)  
+
+</br>
+
+### Interesting and Useful Packages
+</br>
+</br>
+
+</br>
+</br>
+
+Git and GitHub
+--------------------------------------------------------
+
+* [Git Book](http://git-scm.com/book/en/Getting-Started)
+
+* [Git/GitHub guide](http://kbroman.github.io/github_tutorial/)
+
+* [Writing and Collaborating with GitHub](http://downwithtime.wordpress.com/2013/09/13/writing-and-collaborating-on-github-a-primer-for-paleoecologists/)
