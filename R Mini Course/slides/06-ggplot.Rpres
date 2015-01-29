@@ -1,0 +1,398 @@
+Data visualization using ggplot2
+========================================================
+author: Mike McCann 
+date: 22-23 January 2015 
+autosize: true
+transition: none
+
+
+Review
+========================================================
+**`ggplot`** is not a base package, so we need to install it.
+
+1. How would you install the package **`ggplot`**?
+
+2. What is the next step if you want to use a function from **`ggplot2`**? What is the code?
+
+
+Install & load ggplot2
+========================================================
+```{r, eval=FALSE}
+install.packages("ggplot2")
+library(ggplot2)
+```
+
+
+Why ggplot2?
+==============================
+- More elegent & compact code than base graphics 
+- More aesthetically pleasing than base graphics 
+- Very powerful for exploratory analysis 
+
+
+Why ggplot2?
+==============================
+- Supports a continuum of expertise
+- Easy to get started, plenty of power for complex figures
+
+
+Publication-quality figures 
+=================================
+![alt text](ggplot_example.jpg)
+
+
+Publication-quality figures 
+=================================
+![alt text](ggplot2_map.jpg)
+
+
+Why gg?
+==================================================
+- **`gg`** is for "grammar of graphics"
+- Uses a set of terms that defines the basic components of a plot
+- Used to produce figures using coherant, consistant syntax
+
+
+The grammar
+========================================
+A basic **ggplot2** plot consists of:
+- **data**: Must be a data.frame 
+- **aes**thetics: How your data are represented visually 
+    - x, y, color, size, shape, etc.
+- **geom**etry: Geometries of plotted objects
+    - points, lines, polygones, etc. 
+- and more... 
+
+
+A basic plot 
+========================================
+```{r, fig.height=4, fig.width=4}
+library(ggplot2)
+ggplot(data=iris, aes(x=Sepal.Length, y=Sepal.Width)) + geom_point()
+```
+
+
+Plots can be assembled in pieces  
+========================================
+```{r, fig.height=4, fig.width=4}
+myplot <- ggplot(data=iris, aes(x=Sepal.Length, y=Sepal.Width))
+
+myplot + geom_point()
+```
+
+
+Changing aesthetics of a geom
+========================================
+Increase the size of points
+```{r, fig.height=4, fig.width=4}
+ggplot(data=iris, aes(x=Sepal.Length, y=Sepal.Width)) + geom_point(size=3)
+```
+
+
+Changing aesthetics of a geom
+========================================
+Differentiate **Species** by color 
+```{r, fig.height=4, fig.width=4}
+ggplot(data=iris, aes(x=Sepal.Length, y=Sepal.Width, color=Species)) + geom_point(size=3)
+```
+
+
+Changing aesthetics of a geom
+========================================
+Differentiate **Species** by color & shape 
+```{r, fig.height=4, fig.width=4}
+ggplot(data=iris, aes(x=Sepal.Length, y=Sepal.Width, color=Species, shape=Species)) + geom_point(size=3)
+```
+
+
+Try It!
+=======================
+Take a sample of the **`diamonds`** dataset 
+```{r}
+d2 <- diamonds[sample(1:nrow(diamonds),1000),]
+```
+Then generate this plot:   
+```{r, fig.height=4, fig.width=6,echo=FALSE}
+ggplot(data=d2, aes(x=carat, y=price, color=color)) + geom_point()
+```
+
+
+Other types of geoms
+================================
+Type **`geom_`** and hit tab to see them all!
+
+Then, use **`?geom_nameofgeom`** to see the help screen.
+
+
+Example of other geoms
+================================
+Boxplot!
+```{r, fig.height=4, fig.width=6}
+ggplot(iris, aes(x=Species,y=Sepal.Length)) + geom_boxplot()
+```
+
+
+Try It!
+=============================
+1. Look up **`geom_histogram`**. What does it do?
+
+2. Make  a histogram of **Sepal.Length** from the **iris** data set. What did it do with the different species?
+
+
+Facets
+=============================
+Plots can also have **facet**s to make lattice plots. 
+
+```{r}
+ggplot(iris, aes(Sepal.Length)) + geom_histogram() + facet_grid(Species ~ .)
+```
+
+
+Facets
+=============================
+Change to **facet_grid(. ~ Species)** and get one row, three columns.
+
+```{r, fig.height=4, fig.width=12}
+ggplot(iris, aes(Sepal.Length)) + geom_histogram() + facet_grid(. ~ Species)
+```
+
+
+Adding stats 
+=========================
+Type **`stat_`** and hit tab to see them all!
+
+Then, use **`?stat_nameofstat`** to see the help screen.
+
+
+Adding stats 
+=========================
+Use **`stat_smooth`** to add a linear fit
+```{r, fig.height=4, fig.width=6}
+ggplot(iris, aes(x=Sepal.Length, y=Sepal.Width, color=Species)) + geom_point() + stat_smooth(method="lm")
+```
+
+
+Scales
+=========================
+**`scales`** are used to modify axes and colors 
+
+For example: 
+- **scale_y_continuous()** Set name, breaks, labels, limits of y-axis  
+- **scale_x_log10()** log transform the x-axis 
+- **scale_colour_manual()** Specify colors for geoms 
+- **scale_fill_discrete()** Specify colors for geoms 
+
+
+Scales
+=========================
+```{r, fig.height=4, fig.width=4}
+ggplot(data=iris, aes(x=Sepal.Length, y=Sepal.Width, color=Species)) + geom_point(size=3) + scale_colour_manual(values=c("red","blue","yellow"))
+```
+
+
+More examples: Histograms
+=========================
+```{r, fig.height=4, fig.width=6}
+ggplot(faithful, aes(x=waiting)) + geom_histogram(binwidth=30, colour="black")
+```
+
+
+More examples: Histograms
+=========================
+Change some of the aesthetics
+```{r, fig.height=4, fig.width=6}
+ggplot(faithful, aes(x=waiting)) + geom_histogram(binwidth=8, colour="black", fill="steelblue")
+```
+
+
+More examples: Bar plots 
+=========================
+```{r, fig.height=4, fig.width=6}
+ggplot(iris, aes(Species, Sepal.Length)) + geom_bar(stat = "identity")
+```
+
+
+More examples: Line plots 
+=========================
+```{r}
+ggplot(mtcars, aes(x=wt, y=mpg, color=as.factor(cyl))) + geom_line()
+```
+
+
+More examples: Density plots 
+=============================
+```{r, fig.height=4, fig.width=6}
+ggplot(faithful, aes(waiting)) + geom_density()
+```
+
+
+More examples: Density plots 
+=============================
+Add a fill
+```{r, fig.height=4, fig.width=6}
+ggplot(faithful, aes(waiting)) + geom_density(fill="blue")
+```
+
+
+More examples: Density plots 
+=============================
+Sometimes many ways to make the same (similar) graphs
+```{r, fig.height=4, fig.width=6}
+ggplot(faithful, aes(waiting)) + geom_line(stat="density")
+```
+
+
+Themes 
+=========================
+Even more precise control can be done with **themes**
+
+See **`?theme`** for all of the options 
+
+
+Themes 
+=========================
+I commonly use **+ theme_classic()** or **+ theme_bw()**
+
+```{r, fig.height=4, fig.width=6}
+ggplot(iris, aes(Species, Sepal.Length)) + geom_bar(stat = "identity") + theme_bw()
+```
+
+
+Saving plots
+=========================
+```{r, fig.height=4, fig.width=6}
+my_plot <- ggplot(iris, aes(Species, Sepal.Length)) + geom_bar(stat = "identity") + theme_bw()
+
+ggsave("my_plot.jpg",my_plot,height=4,width=4,units="in")
+```
+
+You can specify the file name, dimensions, resolution, etc. 
+
+**Note:** Saved in your current working directory (unless specified).
+
+
+Remember!
+=========================
+**Data must be a data frame to plot with ggplot2**
+
+```{r,eval=FALSE}
+# This won't work!
+xvar <- rnorm(100)
+yvar <- rnorm(100)
+ggplot(aes(xvar,yvar)) + geom_point()
+```
+
+
+Remember!
+=========================
+**Data must be a data frame to plot with ggplot2**
+
+```{r,eval=TRUE}
+xvar <- rnorm(100)
+yvar <- rnorm(100)
+df <- data.frame(xvar, yvar) # make a data frame 
+ggplot(df, aes(xvar,yvar)) + geom_point()
+```
+
+
+Proper data formatting 
+=========================
+Often our data looks like this (**"wide"**)
+```{r,echo=FALSE}
+df <- data.frame(spA=rnorm(100,50,1),
+           spB=rnorm(100,75,5),
+           spC=rnorm(100,20,0.5),
+           spD=rnorm(100,25,0.75))
+```
+
+```{r, echo=FALSE}
+head(df)
+```
+
+```{r}
+dim(df)
+```
+
+
+Proper data formatting 
+=========================
+But our data should look like this (**"long"**)
+```{r,echo=FALSE}
+df2 <- data.frame(species=rep(c("A","B","C","D"),100),
+                  weight=rnorm(400,75,5)
+                  )
+```
+
+```{r, echo=FALSE}
+head(df2)
+```
+
+```{r}
+dim(df2)
+```
+
+
+Melting: from wide to long 
+=============================
+```{r}
+# make some fake "wide" data
+df <- data.frame(A=rnorm(100,50,6),
+           B=rnorm(100,75,5),
+           C=rnorm(100,50,4),
+           D=rnorm(100,55,3))
+```
+
+
+Melting: from wide to long 
+=============================
+Use the **melt()** function in **reshape2** package
+```{r}
+library(reshape2)
+df2 <- melt(df)
+head(df2)
+dim(df2)
+```
+
+
+Now we can plot 
+============================
+```{r}
+ggplot(df2, aes(x=value)) + geom_histogram() + facet_grid(.~variable)
+```
+
+
+Plotting means & error bars 
+=========================
+![alt text](ggplot_example.jpg)
+
+Examples:
+- [Here](http://rpubs.com/mccannecology/47829)  
+- [Here](http://www.cookbook-r.com/Graphs/)
+
+
+Further help
+============================
+[ggplot2 documentation](http://docs.ggplot2.org/current/)
+
+[ggplot2 guide](http://sharpstatistics.co.uk/r/ggplot2-guide/)
+
+[ggplot2 books](http://www.amazon.com/ggplot2-Elegant-Graphics-Data-Analysis/dp/0387981403)
+
+[ColorBrewer](http://colorbrewer2.org/)
+
+
+Questions?
+=========================
+
+[Worksheet](https://rpubs.com/mccannecology/53357)
+
+[Answers](https://rpubs.com/mccannecology/53363)
+
+1. Type in **`data(package="datasets")`** to see all of the datasets pre-installed with R. 
+
+2. Find some data that interests you (or use your own) and examine its structure. Are they vectors, data frames, other? How many observations are there? 
+
+3. Use **`ggplot2`** to make a one plot of some attribute of the data. 
+
+
+

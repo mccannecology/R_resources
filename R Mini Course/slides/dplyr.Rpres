@@ -1,0 +1,474 @@
+Advanced Data Manipulation
+========================================================
+author: Mike McCann 
+date: 22-23 January 2015 
+autosize: true
+transition: none
+
+
+Source for these notes
+===================================
+[Introduction to dplyr](http://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html)
+
+
+Data manipulation
+====================
+When working with data you must:
+
+- Figure out what you want to do.
+
+- Precisely describe what you want in the form of a computer program.
+
+- Execute the code.
+
+
+Why dplyr?
+====================
+The **`dplyr`** package makes each of these steps as fast and easy as possible by:
+
+- Elucidating the most common data manipulation operations, so that your options are helpfully constrained when thinking about how to tackle a problem.
+
+- Providing simple functions that correspond to the most common data manipulation verbs, so that you can easily translate your thoughts into code.
+
+- Using efficient data storage backends, so that you spend as little time waiting for the computer as possible.
+
+
+Data: nycflights13
+=======================
+To explore the basic data manipulation verbs of **dplyr**, we'll start with the built in **nycflights13** data frame.  
+
+All 336,776 flights that departed from New York City in 2013.  
+
+The data comes from the US Bureau of Transporation Statistics, and is documented in **?nycflights13**
+
+
+Data: nycflights13
+=======================
+```{r}
+library(nycflights13)
+dim(flights)
+```
+
+```{r,eval=FALSE}
+head(flights)
+```
+
+Data: nycflights13
+=======================
+**dplyr** can work with data frames as is, but if you're dealing with large data, it's worthwhile to convert them to a **tbl_df**
+
+This is a wrapper around a data frame that won't accidentally print a lot of data to the screen.
+
+```{r}
+library(dplyr)
+flights <- tbl_df(flights)
+```
+
+
+Single table verbs
+=======================
+**dplyr** aims to provide a function for each basic verb of data manipulating:
+
+- **filter()** (and **slice()**)
+- **arrange()**
+- **select()** (and **rename()**)
+- **distinct()**
+- **mutate()** (and **transmute()**)
+- **summarise()**
+- **sample_n()** and **sample_frac()**  
+
+If you’ve used **plyr** before, many of these will be familar.
+
+
+
+Filter rows with filter()
+===============================
+**filter()** allows you to select a subset of the rows of a data frame.  
+
+The first argument is the name of the data frame. 
+
+The second and subsequent are filtering expressions evaluated in the context of that data frame.
+
+
+Filter rows with filter()
+===============================
+For example, we can select all flights on January 1st with:
+```{r}
+filter(flights, month == 1, day == 1)
+```
+
+
+Filter rows with filter()
+===============================
+```{r, eval=FALSE}
+filter(flights, month == 1, day == 1)
+```
+
+What would the equivalent be in base R?
+
+
+
+Filter rows with filter()
+===============================
+```{r, eval=FALSE}
+filter(flights, month == 1, day == 1)
+```
+
+What would the equivalent be in base R?
+```{r, eval=FALSE}
+flights[flights$month == 1 & flights$day == 1, ]
+```
+
+
+Select rows with slice()
+==========================
+```{r}
+slice(flights, 1:10)
+```
+
+
+Select rows with slice()
+==========================
+```{r, eval=FALSE}
+slice(flights, 1:10)
+```
+What would the equivalent be in base R?
+
+
+Select rows with slice()
+==========================
+```{r, eval=FALSE}
+slice(flights, 1:10)
+```
+What would the equivalent be in base R?
+```{r, eval=FALSE}
+flights[1:10,]
+```
+
+
+Try It!
+============================
+1. Select all of the cases in **iris** where **Species** is "virginica" & **Petal.Width** is >2.  
+
+Use both a **dplyr** and a base R solution. 
+
+
+
+Arrange rows with arrange()
+============================
+**arrange()** works like **filter()** except that instead of selecting rows, it reorders them.  
+
+It takes a data frame and a set of column names (or more complicated expressions) to order by.  
+
+If you provide more than one column name, each additional column will be used to break ties in the values of preceding columns
+
+
+Arrange rows with arrange()
+============================
+```{r, eval=FALSE}
+arrange(flights, year, month, day)
+```
+
+
+Arrange rows with arrange()
+============================
+Use **desc()** to order a column in descending order:
+
+```{r, eval=FALSE}
+arrange(flights, desc(arr_delay))
+```
+
+
+Arrange rows with arrange()
+================================
+If you wanted to do that with base R you would have typed: 
+
+```{r, eval=FALSE}
+flights[order(flights$year, flights$month, flights$day), ]
+
+flights[order(desc(flights$arr_delay)), ]
+```
+
+
+Select columns with select()
+===================================
+Often you work with large datasets with many columns where only a few are actually of interest to you.  
+
+**select()** allows you to rapidly zoom in on a useful subset using operations that usually only work on numeric variable positions
+
+
+Select columns with select()
+===================================
+```{r, eval=FALSE}
+# Select columns by name
+select(flights, year, month, day)
+
+# Select all columns between year and day (inclusive)
+select(flights, year:day)
+```
+
+
+Select columns with select()
+===================================
+```{r, eval=FALSE}
+# Select all columns except those from year to day (inclusive)
+select(flights, -(year:day))
+```
+
+
+Select columns with select()
+===================================
+There are a number of helper functions you can use within **select()** 
+- **starts_with()** 
+- **ends_with()** 
+- **matches()** 
+- **contains()**  
+
+These let you quickly match larger blocks of variable that meet some criterion. See **?select** for more details.
+
+
+Rename columns with rename()
+===================================
+```{r, eval=FALSE}
+rename(flights, tail_num = tailnum)
+```
+
+
+Extract distinct (unique) rows
+====================================
+A common use of **`select()`** is to find out which values a set of variables takes.
+
+This is particularly useful in conjunction with the **`distinct()`** verb which only returns the unique values in a table.
+
+```{r, eval=FALSE}
+distinct(select(flights, tailnum))
+
+distinct(select(flights, origin, dest))
+```
+
+This is very similar to **`base::unique()`** but should be much faster.
+
+
+
+Add new columns with mutate()
+=================================
+As well as selecting from the set of existing columns, it’s often useful to add new columns that are functions of existing columns.  
+
+This is the job of **mutate()**
+
+
+Add new columns with mutate()
+=================================
+```{r, eval=FALSE}
+mutate(flights,
+  gain = arr_delay - dep_delay,
+  speed = distance / air_time * 60)
+```
+
+
+Add new columns with mutate()
+=================================
+You can even refer to columns that you just created.
+```{r, eval=FALSE}
+mutate(flights,
+  gain = arr_delay - dep_delay,
+  gain_per_hour = gain / (air_time / 60)
+)
+```
+
+
+Summarise values with summarise()
+=====================================
+The last verb is **summarise()**, which collapses a data frame to a single row. It's not very useful yet:
+```{r}
+summarise(flights,
+  delay = mean(dep_delay, na.rm = TRUE))
+```
+
+
+
+Randomly sample rows 
+=========================================================
+You can use either **sample_n()** to sample a fixed number or **sample_frac()** to sample a fixed fraction.
+
+```{r, eval=FALSE}
+sample_n(flights, 10)
+
+sample_frac(flights, 0.01)
+```
+
+
+Commonalities
+============================
+You may have noticed that all of these functions are *very similar*:
+- The first argument is a data frame.
+- The subsequent arguments describe what to do with it, and you can refer to columns in the data frame directly without using **$**.
+- The result is a new data frame  
+
+Together these properties make it easy to chain together multiple simple steps to achieve a complex result.
+
+
+Grouped operations
+===========================
+In **dplyr**, you use the **group_by()** function to describe how to break a dataset down into groups of rows. 
+
+You can then use the resulting object in exactly the same functions as above.  
+
+They’ll automatically work “by group” when the input is a grouped.
+
+
+Grouped operations
+===========================
+The verbs are affected by grouping as follows:
+
+- grouped **select()** retains grouping variables
+- grouped **arrange()** orders first by grouping variables
+- **sample_n()** and **sample_frac()** samples rows from each group
+- **slice()** extracts rows from each group.
+- **summarise()** is easy to understand and very useful, and is described in more detail below.
+
+
+Summarise 
+=============================
+You use **summarise()** with **aggregate functions**, which take a vector of values, and return a single number.   
+
+There are many useful functions in base R like:
+- **min()** and **max()**
+- **mean()** and **median()**
+- **sum()** 
+- **sd()** 
+- **IQR()**
+
+
+Summarise
+=============================
+**dplyr** provides a handful of other **aggregate functions**:
+- **n():** # of observations in the current group
+- **n_distinct(x):** # of unique values in x
+- **first(x):** like **x[1]**
+- **last(x):** like **x[length(x)]**
+- **nth(x, n):** like **x[n]** 
+
+
+Summarise: Example  
+====================================
+Use **group_by()** and **summarise()** to find the number of planes and the number of flights that go to each possible destination:
+```{r, eval=FALSE}
+destinations <- group_by(flights, dest)
+
+summarise(destinations,
+  planes = n_distinct(tailnum),
+  flights = n()
+)
+```
+
+
+Try It!
+===========================
+1. Use **summarise()** and **group_by** to find the mean **Sepal.Length** of each species in **iris**
+
+
+Multiple operations: step-by-step
+===========================
+Performing many operations, step-by-step does not produce elegant code
+```{r}
+a1 <- group_by(flights, year, month, day) 
+
+a2 <- select(a1, arr_delay, dep_delay) 
+
+a3 <- summarise(a2, 
+  arr = mean(arr_delay, na.rm = TRUE),
+  dep = mean(dep_delay, na.rm = TRUE)) 
+
+a4 <- filter(a3, arr > 30 | dep > 30) 
+```
+
+
+Multiple operations: nested
+===========================
+Or if you don’t want to save the intermediate results, you need to wrap the function calls inside each other:
+```{r, eval=FALSE}
+filter(
+  summarise(
+    select(
+      group_by(flights, year, month, day),
+      arr_delay, dep_delay
+    ),
+    arr = mean(arr_delay, na.rm = TRUE),
+    dep = mean(dep_delay, na.rm = TRUE)
+  ),
+  arr > 30 | dep > 30
+)
+```
+
+
+Chaining
+===========================
+To get around this problem, **dplyr** provides the **%>%** operator.  
+
+**x %>% f(y)** turns into **f(x, y)**  
+
+You can rewrite multiple operations so you can read from left-to-right, top-to-bottom.
+
+
+Chaining: Example 
+===========================
+```{r, eval=FALSE}
+flights %>%
+  group_by(year, month, day) %>%
+  select(arr_delay, dep_delay) %>%
+  summarise(
+    arr = mean(arr_delay, na.rm = TRUE),
+    dep = mean(dep_delay, na.rm = TRUE)
+  ) %>%
+  filter(arr > 30 | dep > 30)
+```
+
+
+Try It!
+===========================
+1. Use chaining to find the mean and standard deviation of **Petal.Width** of each species in **iris**
+
+
+Melting data 
+==========================
+Often our data look like this: 
+```{r}
+data <- data.frame(species = c(rep(1, 1000), rep(2, 1000)),
+                   treatment = rep(c("Exp","Cont"),1000),
+                   weight = rnorm(2000, 10, 1),
+                   length = rnorm(2000, 50, 5))
+```
+
+
+Melting data 
+==========================
+But instead of:
+```{r}
+colnames(data)
+```
+we want **species**, **treatment**, **variable**, **value**
+
+
+Melting data 
+==========================
+This manipulation is called **melting** and can be done with the package **reshape2**
+```{r}
+library(reshape2)
+melted <- melt(data, 
+               id.vars=c("species", "treatment"))
+```
+
+
+Summarise melted data 
+=========================
+Chaining **dplyr** commands: 
+```{r}
+melted %>% 
+  group_by(species,treatment) %>%
+    summarise(mean=mean(value), sd=sd(value))
+```
+
+
+Questions?
+===========================

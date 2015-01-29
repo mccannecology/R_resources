@@ -1,0 +1,209 @@
+Defining your own functions
+========================================================
+author: Mike McCann 
+date: 22-23 January 2015 
+autosize: true
+transition: none
+
+
+Functions in R: Base
+=============================
+We have already seen many of the basic functions that come pre-installed with R.
+
+```{r, eval=FALSE}
+sum(seq(1,100,1))
+abs(-100+50)
+dim(iris)
+str(iris)
+colnames(iris)
+```
+
+
+Functions in R: Packages 
+=============================
+We have also seen functions that are loaded from packages. 
+
+```{r, eval=FALSE}
+# This will not run. tree is not loaded 
+tree(formula=Species ~ . -Species, data=iris) 
+
+install.packages("tree") # Install it 
+library(tree) # Load it 
+
+# Now it should work 
+tree(formula=Species ~ . -Species, data=iris)
+```
+
+
+Functions in R: Make your own!
+=============================
+It is also possible to **define your own functions.**  
+
+This is especially important if you are going to write the same lines of code over & over again. 
+
+- R functions are objects just like anything else.
+- By default, R function arguments are lazy, i.e., they're only evaluated if they're actually used.
+- Every call on a R object is almost always a function call. 
+
+
+Basic components of a function
+=================================
+- The *body()*, the code inside the function.
+- The *formals()*, the "formal" argument list, which controls how you can call the function.
+- The *environment()*, which determines how variables referred to inside the function are found.
+- *args()* to list arguments. 
+
+
+Writing functions
+====================
+```{r}
+# define a function, f
+f <- function(x){
+  x 
+}
+
+# call function f (argument=1)
+f(1) 
+```
+
+
+
+Functions and Environments 
+=============================
+Variables defined inside functions exist in a different **environment** than the global environment.   
+
+However, if a variabe is not defined inside a function, the function will look one level above.
+
+
+
+
+Example of a function
+=============================
+```{r}
+x <- 2 # variable defined outside the function
+
+g <- function() {
+    y <- 1 # variable defined inside the function 
+    c(x, y) 
+}
+
+g()
+```
+
+
+Example of a "useful" function
+==============================
+```{r}
+first <- function(x, y) {
+    z <- x + y 
+    return(z) 
+}
+
+first(5, 7)
+```
+What happens if you don't write **return()** inside the function? 
+
+
+Try It!
+============================
+1.) Create a function that takes in two arguments, x and y, and computes x*2 * y.  
+
+2.) Create a function that takes in three arguments, and makes a vector from the result.
+
+3.) Create a function that counts the number of matching items. Hint: use **`%in%`** to create a logical statement.
+
+
+Example of a "useful" function
+============================
+```{r}
+add <- function(a, b){
+    return(a + b)
+}
+
+vector <- c(3,4,5,6)
+
+add(vector[1], vector[2])
+```
+
+
+What does this function return?
+====================================
+```{r}
+x <- 5
+f <- function() {
+    y <- 10
+    c(x = x, y = y)
+}
+```
+
+What does this function return?
+====================================
+```{r}
+x <- 5
+f <- function() {
+    y <- 10
+    c(x = x, y = y)
+}
+```
+
+```{r}
+f()
+```
+
+
+Functions with pre-defined values
+=======================================
+```{r}
+subtract <- function(a=5, b=2){
+    return(a-b)
+}
+
+subtract()
+subtract(5,6)
+````
+
+
+Try It!
+==================
+1.) Write a function that takes in a vector and multiplies the sum of the vector by 10. Return a logical statement based on whether the sum is under 1000.
+
+2.) Write a function that calculates the mean of every column in a dataframe. Have it break gracefully if the columns are not numbers, using **class(x) != "numeric"**. Try your function on the **iris** dataset
+
+
+Try It!
+==================
+```{r}
+func3 <- function(x){
+  for (i in 1:ncol(x)){
+    if(class(x[,i]) != "numeric"){next}
+    if(class(x[,i]) == "numeric"){
+      print(mean(x[,i]))
+    }
+  }
+}
+func3(iris)
+```
+
+
+Functions usually return the last value it computed
+========================================================
+```{r}
+f <- function(x) {
+    if (x < 10) {
+        0
+    } else {
+        10
+    }
+}
+f(5)
+f(15)
+```
+
+
+Questions?
+========================================================
+![alt text](dog2.gif)
+
+[Worksheet](https://rpubs.com/mccannecology/53356)
+
+[Answers](https://rpubs.com/mccannecology/53362)

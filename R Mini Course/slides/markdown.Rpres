@@ -1,0 +1,81 @@
+Reproducible Research with RMarkdown
+========================================================
+author: Mike McCann 
+date: 22-23 January 2015 
+autosize: true
+transition: none
+
+
+Reproducable programming in R
+=======================================
+
+It's easy to generate reports dynamically in R.
+
+**Basic idea:**  
+
+Write **data** + **software** + **documentation** (or in this case manuscripts, reports) together.
+
+
+
+Analysis code is divided into text and code "chunks".
+=====================================================
+
+Literate programming involves three main steps:  
+
+1. Parse the source document and separate code from narratives.
+2. Execute source code and return results.
+3. Mix results from the source code with the original narratives.
+
+
+
+Why this is important?
+=============================
+Results from scientific research have to be reproducible to be trustworthy.  
+
+We do not want a finding to be merely due to an isolated occurrence.  
+
+This instills confidence and allows us to share data, results and scripts.
+
+
+
+What is markdown?
+==================
+
+An incredibly simple semantic file format. Markdown makes it easy for even those without a web-publishing background to write any sort of text (including with links, lists, bullets, etc.) and have it displayed in a variety of formats. 
+
+* [Markdown cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
+* [Original markdown reference](http://daringfireball.net/projects/markdown/basics)
+
+
+
+Creating a basic knitr document
+===============================
+
+In RStudio, choose new R Markdown file (easiest way)
+or create a new file and save it with extension `.Rmd`.
+
+```{r}
+# some R code
+```
+
+
+Knitr
+===============================
+
+Hit the Knit HTML button
+
+**What just happened?**
+
+**knitr** reads the **.Rmd** file, finds and runs the code chunks identified by the backticks, and replaces it with the output of the functions.
+
+Knitr will make tables, graphs, and even slides.
+
+
+
+RPubs
+===============================
+Documents can be hosted on [RPubs](http://rpubs.com/).
+
+Provides a stable URL that can be shared with others. 
+
+Everything in this course was made by typing into Rstudio.

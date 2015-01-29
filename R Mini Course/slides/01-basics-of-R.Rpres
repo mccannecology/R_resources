@@ -1,0 +1,443 @@
+Basics of R
+========================================================
+author: Mike McCann 
+date: 22-23 January 2015 
+autosize: true
+transition: none
+
+
+Introduction to R
+======================================================
+* Public domain software 
+* Superior (if not comparable) to commercial alternatives
+* Available on all platforms
+* Not just for statistics, but also general purpose programming
+* Is object-oriented and functional
+
+
+Why use R?
+=====================================
+* Reproducible 
+* Save time 
+* Large user base (get help!)
+* Valued skill (get a job!)
+
+
+Running R with RStudio
+========================================================
+Four sections in RStudio: 
+
+- **Console:** Where commands are run
+
+- **Scripts:** Where commands are written & saved
+
+- **Environments:** Where objects are stored
+
+- **Plots & Help:** View data, help 
+
+
+Running R with RStudio
+========================================================
+Type directly into console or type into script then run **(CTRL + ENTER)**
+
+A **script** is a plain text file with R commands in it. 
+
+Ends in the file extension **.R** or **.txt** 
+
+
+R as a calculator 
+========================================================
+R has many mathematical operators 
+- **`+`**   Addition 
+- **`-`**   Subtraction 
+- **`*`**   Multiplication 
+- **`/`**   Division 
+- **`^`**   Exponentiation 
+- **`%%`**  Modulus (finds remainder) 
+- **`%/%`** Integer division (leaves off remainder)
+
+
+R is logical 
+========================================================
+R has many logical operators 
+- **`<`**  Less than
+- **`<=`** Less than or equal to 
+- **`>`**  Greater than
+- **`>=`** Greater than or equal to  
+- **`==`** Exactly equal to 
+- **`!=`** not equal to 
+- **`!`**  NOT
+- **`|`**  OR
+- **`&`**  AND
+
+
+Try It!
+========================================================
+1. What is 17 multiplied by 365?
+
+2. What is 7 cubed?
+
+3. Is 9 to the fourth equal to the sum of 2000 and 187 multiplied by 3?
+
+
+Creating Objects
+========================================================
+An object is the fundamental unit in R.   
+
+All expressions can be saved as an object.
+
+To create an object from an expression we use the assignment operater **`<-`**
+
+
+Assignment operator
+========================================================
+**`<-`** assigns values on the right to objects on the left.
+
+```{r}
+a <- 12+180
+a
+```
+The object **`a`** is now the output of the expression 12+180.
+
+Check your **Environment** (upper right panel)
+
+
+Assignment operator
+========================================================
+Do not used **a = 12+180** for assignment in R. 
+
+[Google's R Style Guide](https://google-styleguide.googlecode.com/svn/trunk/Rguide.xml)  
+
+[Advanced R: Style Guide](http://adv-r.had.co.nz/Style.html)
+
+
+R Tip: Comment on your code 
+========================================================
+> **Use `#` signs to comment on your script.**  
+> 
+> Anything to the right of a **`#`** is ignored.  
+> 
+> Good scripts (and homework) have comments before every major block of code.   
+
+```{r}
+5 + 5 # this adds five and five 
+
+# 10 + 10 this does not add ten and ten 
+```
+
+
+Expressions using objects
+========================================================
+The beauty of R is that objects can be combined into other, larger, and more complex objects.
+
+```{r}
+a <- 8*10
+b <- 2*10
+d <- a*b
+d
+
+# This is equivalent to: 
+d <- 8*10*2*10
+d
+```
+
+
+Try It!
+========================================================
+3. Create an object that is your age. Create another object that is the age of the person to your right. Find the difference between these objects. 
+
+
+Combining things - Vectors!
+========================================================
+R has ~5 common data structures.  
+
+We will start with the simplest: **vectors**.  
+
+Vectors are one dimensional strings of numbers, character, or objects.  
+
+A vector is made using the function **`c()`**.
+
+
+Combining numbers into vectors
+========================================================
+```{r}
+a <- c(3,4,5)
+a
+```
+
+
+Combining characters into vectors
+========================================================
+```{r}
+b <- c("q","r","s")
+b
+```
+
+
+Combining objects into vectors
+========================================================
+```{r}
+# make some objects 
+a <- 4*7
+b <- 6*5
+g <- 9*2
+
+# combine 'em
+d <- c(a,b,g)
+d
+```
+
+Indexing Vectors
+=============================
+You can access any position of the vector using the square brackets **`[ ]`**
+```{r}
+# make a vector 
+d <- c(72,6)
+d
+
+d[1] # get the 1st object in the vector 
+d[2] # get the 2nd 
+```
+
+
+Try It!
+=====================
+4. What is the 9th and 12th position of **`seq(1,27,0.5)`**? 
+
+5. **Bonus!** Can you find those positions simultaneously?
+
+6. **Bonus!** Make a vector **"Green", "Eggs"**. How would you add **Ham** to that vector?  
+
+
+Functions
+===========
+A function is a saved object that performs a task given some inputs.   
+
+All functions are made up of smaller objects.   
+
+Functions are used in the format:  
+> **name_of_function(inputs)**   
+
+The output of a function can be saved to an object: 
+> **output <- name_of_function(inputs)**
+
+
+Functions
+===========
+You have already used the funcion **`c()`**.  
+
+It combines the **arguments** you give it into a vector. 
+
+The **arguments** are separated by commas.
+
+```{r}
+c(3,4,5)
+```
+
+
+Functions
+===========
+You have already also seen the funcion **`seq()`**.  
+
+It generates regular sequences given three **arguments**. 
+
+```{r}
+seq(from=1, to=10, by=1)
+```
+
+
+Functions
+===========
+Not necessary to explicitly name arguments (but it is often helpful).
+```{r}
+seq(1,10,1)
+```
+
+
+Functions
+===========
+Use **sum()** to take the sum a vector:
+```{r}
+sum(c(3,4,5))
+```
+
+Use **mean()** to take the mean of a vector:
+```{r}
+mean(c(3,4,5))
+```
+
+
+Functions
+===========
+Functions can act on an object 
+```{r}
+# assign the numbers to a vector 
+a <- c(3,4,5)
+
+# use the vector as the input to the function
+mean(a)
+```
+
+
+R Tip: The Help Screen
+================================
+> All functions come with a help screen. 
+> 
+> It is critical that you learn to read the help screens, since they provide important information on what the function does, how it works, and ususally provide examples at the very bottom.
+> ```{r}
+> help(mean)
+> ```
+
+
+R Tip: The Help Screen
+=================================
+> Even quicker... 
+>
+> Use **?** before a function name to view the help screen 
+> 
+> ```{r}
+> ?mean # Same as help(mean) 
+> 
+> ?sort # Same as help(sort)
+>  
+> ```
+
+
+R Tip: The Help Screen
+==================
+> Some R functions are easy to guess their name
+> 
+> Most functions are abbreviated to save time and space. 
+> 
+> Use **??** to search for functions
+> 
+> e.g., Search for any function whose help screens contain the word **"robust"**
+> ```{r}
+> ??robust
+> ```
+>
+> **Note:** This will only work for installed packages
+
+
+Try It!
+==================
+6. What is the median of 34, 16, 105, 27?   
+**Remember:** functions are often named intuitively.
+
+7. What does the function **`range()`** do, what is the sample example in the help file?
+
+8. **Bonus!** Is **mean(4,5)** different than **mean(c(4,5))**?
+
+
+Packages
+=====================
+We will be exploring **functions** in much greater detail throughout this course.  
+
+Functions are the soul of R, that is why we use it.  
+
+Functions are kept inside **packages**, some of which come pre-installed with R. 
+
+Others must be downloaded.
+
+
+Packages
+=====================
+There are tons of R packages!
+
+[List of R Packages](http://cran.r-project.org/web/packages/available_packages_by_name.html) and search with your favorite keyword!  
+
+*Ecology, paleo, dispersal, population, time series, phylogenetic, community, Bayes*
+
+
+Installing Packages
+=====================
+Often you will need to install a package to access a certain library of functions.
+```{r, eval=FALSE}
+# Install a new package
+install.packages("picante") 
+
+# If RStudo asks, pick a closeby mirror and say "okay"" if it asks to create a new folder
+```
+**Remember to surround the package name in quotation marks.**
+
+
+Loading Packages 
+=====================
+Installing a package just downloads its to your computer.     
+
+To actually use a function from an outside package you have to **"load it."**    
+
+This let's R know what packages to load in, and not waste time with all potential functions.    
+
+```{r}
+# Two ways to load packages:
+library(ggplot2)
+require(ggplot2)
+```
+**Note: no quotation marks needed**
+
+
+R Tip: Loading Packages 
+==============================
+> Good scripts (and homeworks) have a series of **require()** or **library()** statements at the top of the script. 
+
+
+Try It!
+======================
+9. Search & find a fascinating package. What is it? What is one interesting function?
+
+10. Install the package to your computer. 
+
+
+[List of R Packages](http://cran.r-project.org/web/packages/available_packages_by_name.html)
+
+
+You are not alone: The R User Community
+================================
+[Stack Overflow](http://stackoverflow.com/questions/tagged/r)  
+
+[R-Bloggers](http://www.r-bloggers.com/)  
+
+[R Mailing Lists](http://www.r-project.org/mail.html)
+
+[R for cats](http://rforcats.net/)
+
+![alt text](R_help.png)
+
+
+Environments
+=======================
+**`ls()`** will list all of the obects in your environment.
+
+
+Removing objects 
+=======================
+**`rm()`** will remove individual objects 
+```{r}
+x <- 10
+rm(x) 
+```
+
+**`rm(list=ls())`** will remove everthing in your workspace 
+```{r}
+a <- 1; b <- 2; d <- 3; e <- 4
+rm(list=ls()) 
+```
+
+
+Quitting R
+================================
+Always remember to save scripts.   
+
+For now we will not save workspaces.
+
+Type in **quit()** or **q()** and answer **N** to quit.  
+
+
+Questions?
+============================
+![alt text](thumbs_up.gif)
+
+[Worksheet](https://rpubs.com/mccannecology/53351)
+
+[Answers](https://rpubs.com/mccannecology/53358)

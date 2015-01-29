@@ -1,0 +1,221 @@
+Probability & Distributions
+========================================================
+author: Mike McCann 
+date: 22-23 January 2015 
+autosize: true
+transition: none
+
+
+Review
+==================================================
+When do we use parentheses? Brackets? Commas? Semi-colons? 
+
+What is the [sum of (1 through 10)] multiplied by two? 
+
+What is the 12th and 45th position of **`seq(1,43,0.25)`**?
+
+
+Distributions
+====================================================
+It is often  useful to generate a sample from a specific statisical distribution.  
+
+**Generating random samples from a normal distribution**
+
+To generate a sample of size 100 from a standard normal distribution (with mean 0 and standard deviation 1) we use the **`rnorm()`** function. 
+
+```{r}
+norm <- rnorm(100, mean=0, sd=1)
+head(norm)
+```
+
+
+Try It!
+================================
+1. Look up the **`rnorm()`** function in help screen. Locate the three arguments we used.
+2. Draw 100 random numbers from a normal distribution with a mean of 3 and an sd of 2, assign it to an object **a**.
+3. Find the mean number of your draw. How close was it to the true mean?
+4. Use the **??** tool to lookup the function for standard deviation **Hint:** Do not include spaces in the query.
+5. What is the 13th number in the your vector **a**?
+
+
+Generating random samples from other distributions
+======================================================
+- R has many distributions in the base package, including all commonly used in biological analysis.  
+- Depending on the distribution, each function has its own set of parameter arguments. 
+- For example, the **`rpois()`** function is the random number generator for the Poisson distribution and it has only the parameter *lambda*. 
+- The **`rbinom()`** function is the random number generator for the binomial distribution and it has two parameters: *size* and *prob*. The *size* argument specifies the number of Bernoulli trials and the *prob* argument specifies the probability of a success for each trial.  
+
+**BEE552 Students:** Heather will pick up from here.
+
+
+Try It!
+===========
+6. Draw 100 values from a poisson with a lambda=3, assign it to an object **`a`**.
+7. Draw 1000 values from a poisson with a lambda=3, assign it to an object **`b`**.
+8. Find the means of both draws. What is the difference in means?
+
+
+Other Properties of Distributions 
+=====================================
+For each distribution there are **four functions** which will generate fundamental quantities of a distribution. 
+
+Let's consider the normal distribution as an example. 
+
+- **`rnorm()`** a random sample from a specific normal distribution.  
+- **`dnorm()`** the density probability for a specific value for a normal distribution.   
+- **`pnorm()`** the distribution function   
+- **`qnorm()`** the quantile function   
+
+**pnorm()**, and **qnorm()** will be covered during Biometry. They are less commonly used.
+
+
+An introduction to plotting: Univariate
+===========================================
+Histograms are a common univariate plot.  
+
+Histograms place data into "bins", and count the number of data falling into each bin.  
+
+Bins are usually plotted as bars, with the x range on the x axis, and count on the y axis.
+
+
+An introduction to plotting: Univariate
+===========================================
+```{r, fig.height=5, fig.width=5}
+# Draw a thousand random normal points
+pts <- rnorm(1000)
+hist(pts)
+```
+
+Histograms are an effective way of visualizing distributions
+
+
+Try It!
+=============
+12. Draw 10 random normal points and plot a histogram, then 100, then 1000. What do you notice about the plot?
+
+13. Explore at least one other distribution, look up **?distributions**. **Hint:** remember to use the *r-nameofdistribution* function to take random samples.
+
+14. Plot your new distribution and share with your neighbor.
+
+15. Draw 1000 random normals with a mean of 0 and a sd of 1. Look at the **hist** help screen. How do you specify the size of the bin range? Try making bins from -4 to 4, with intervals of 0.01, 0.1, and 1. **Hint:** Consider using **seq()** in the "breaks"" argument within **hist()**.
+
+
+Density plots
+=====================================
+```{r,fig.width=5,fig.height=5}
+x <- seq(0,4,0.01)
+dens <- dnorm(x, 2, 0.5)
+plot(x, dens, type = "l")
+```
+
+
+Try It!
+=====================================
+15. Draw 1000 random normals with a mean of 0 and a sd of 1.
+16. Plot the density of the distribution from -4 to 4. **Hint:** You will need to use **dnorm()**
+17. Label your axis, "This is the x axis", "This is the y axis" by looking at the **plot** help screen. 
+
+
+
+More Plotting 
+=====================================
+Another option is to plot the distribution not in terms of raw counts, but in terms of density, so the histogram sums to 1.
+
+```{r,fig.height=4,fig.width=4}
+x <- rnorm(100, mean=0, sd=2)
+hist(x, freq=FALSE)
+```
+
+
+Very Brief Intro to Sampling
+=====================================
+In R, it's very easy to take a random sample of numbers with the **`sample()`** command.   
+
+
+Sample without replacement
+=====================================
+Take a random sample of 20 numbers from a vector of 1 to 100.
+```{r}
+x <- 1:50
+sample(x, 20)
+```
+
+
+Sample with replacement
+=====================================
+```{r}
+x <- 1:50
+sample(x, 20, replace=TRUE)
+```
+
+
+Try It!
+=====================================
+16. Sample 14 integers from 100 to 200 without replacement.
+17. Sample 5 letters (using the pre-installed vector **'letters'**) from the alphabet with replacement
+18. Sample 0 or 1 tweleve times. Do it with and without replacement. What happens?
+
+
+An introduction to plotting: Bivariate
+=====================================
+Scatterplots are useful for showing the relationship between two variables 
+ 
+```{r, fig.height=5, fig.width=5}
+x <- rnorm(n=100, mean=5, sd=0.05)
+y <- x * rnorm(n=100, mean=1, sd=0.01)
+plot(y~x)
+```
+
+
+An introduction to plotting: Bivariate
+=====================================
+Instead of writing the relationship as a formula i.e., **`y~x`**  
+
+You can write **`plot(x,y)`** where x and y are separated by a comma 
+
+```{r, fig.height=5, fig.width=5}
+plot(x,y)
+```
+
+
+Adding lines to scatterplots 
+=====================================
+You can add straight lines with **`abline()`**
+```{r, fig.height=5, fig.width=5}
+plot(x,y)
+abline(a=0, b=1, col="red")
+```
+
+**a** specifies the intercept. **b** the slope.
+
+
+Lines can also be model fits 
+=====================================
+```{r, fig.height=5, fig.width=5}
+plot(x,y)
+abline(lm(y~x), col="red")
+```
+
+**`lm()`** fits a linear relationship between **x** and **y**.
+
+
+Lots of options for plotting 
+=====================================
+[R Base Graphics: An Idiot's Guide](http://rpubs.com/SusanEJohnston/7953)
+
+[R Base Graphics Plotting](https://leemendelowitz.github.io/blog/r-base-graphics-plotting.html)
+
+[Quick-R: Basic Graphs](http://www.statmethods.net/graphs/)
+
+[Producing Simple Graphs with R](http://www.harding.edu/fmccown/r/)
+
+More on plotting later...
+
+
+Questions?
+============================
+![alt text](dog.jpg)
+
+[Worksheet](https://rpubs.com/mccannecology/53352)
+
+[Answers](https://rpubs.com/mccannecology/53359)
